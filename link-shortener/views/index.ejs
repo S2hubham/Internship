@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>URL Shortener</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔥URL Shortener🔥</h1>
+
+            <form action="/api/urls" method="POST">
+                <input
+                    type="text"
+                    name="originalUrl"
+                    placeholder="Enter your URL here..."
+                    required
+                    title="Enter a valid URL starting with http:// or https://"
+                />
+                <button type="submit">Shorten It!</button>
+            </form>
+
+            <% if (shortUrl) { %>
+            <div class="short-url">
+                <h3>Your Shortened URL:</h3>
+                <a href="<%= actualLink %>" target="_blank"><%= shortUrl %></a>
+                <p class="info">This link will expire in 15 minutes.</p>
+            </div>
+            <% } %>
+
+            <% if (error) { %>
+            <p class="error"><%= error %></p>
+            <% } %>
+
+            <p class="info">
+                Please make sure your URL is valid, not blacklisted, and
+                accessible. Blacklisted or unreachable URLs will not be
+                shortened.
+            </p>
+        </div>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f4f4f4;
+            }
+
+            .container {
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                width: 90%;
+                max-width: 400px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                color: #333;
+                margin-bottom: 1.5rem;
+            }
+
+            input[type="text"] {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin-bottom: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            button {
+                background: #4caf50;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                cursor: pointer;
+                border-radius: 4px;
+                transition: background 0.3s ease;
+            }
+
+            button:hover {
+                background: #45a049;
+            }
+
+            .short-url {
+                margin-top: 1rem;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background: #f9f9f9;
+            }
+
+            .short-url a {
+                color: #4caf50;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            .short-url a:hover {
+                text-decoration: underline;
+            }
+
+            .error {
+                color: red;
+                font-size: 0.9rem;
+                margin-top: 1rem;
+            }
+
+            .info {
+                color: #555;
+                font-size: 0.8rem;
+                margin-top: 1rem;
+            }
+        </style>
+    </body>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", (e) => {
+            const input = document.querySelector('input[name="originalUrl"]');
+            const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
+            if (!urlPattern.test(input.value)) {
+                e.preventDefault();
+                alert(
+                    "Please enter a valid URL starting with http:// or https://"
+                );
+            }
+        });
+    </script>
+</html>
